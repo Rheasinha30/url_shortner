@@ -1,23 +1,47 @@
-import logo from './logo.svg';
 import './App.css';
-
+import { handleLongURL } from './frontEnd/frontEnd.api';
+import { useState } from 'react';
 function App() {
+
+  let [inputValue, setInputValue] = useState('');
+  let [shortURL, setShortURL] = useState('');
+  const handleOnSubmit = async () => {
+    let resp = await handleLongURL(inputValue);
+    setShortURL(resp)
+  }
+  const handleOnChange = (e) => {
+    setInputValue(e.target.value);
+  }
+  const handleRedirect = async () => {
+    console.log("Redirected")
+  } 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="animated-background"></div>
+      <main>
+        <section>
+          <>
+            <input className="inputForLink"
+              placeholder="Enter URL"
+              value={inputValue}
+              onChange={handleOnChange}
+              type="text" />
+            <br />
+            <button className="submitButton" onClick={handleOnSubmit}>Submit</button>
+          </>
+          <div>
+          {shortURL &&
+              <p>short url: <tab/>
+                <a href={shortURL} target="_blank" rel="noopener noreferrer" onClick={handleRedirect}>
+                  {shortURL}
+                </a>
+              </p>}
+            </div>
+        </section>
+      </main>
+      <footer>
+        <p>&copy; 2024 URL SHORTNER</p>
+      </footer>
     </div>
   );
 }
